@@ -1,0 +1,105 @@
+﻿1. The difference between internal and external linkage citing examples from your code?
+
+
+ Linkage is the term used in C++ to describe the accessibility of a variable or function. An internal linkage prevents a variable or function from being used outside of its own source file, making it inaccessible to other files. This means that it can only be read and used within the same file where it was declared. 
+
+
+On the other hand, when a variable, function, or type has internal linkage, it means that it can only be accessed from inside the source file where it was defined.
+Here are a few instances of how internal linking may be used to construct variables, functions, and types in C++:
+
+
+1. The "static" keyword is used to specify variables and functions that have internal linking. For example, in my program I declared the following variable to have internal linkage by declaring it with the ‘static’ keyword. 
+
+
+            static unsigned int counter = 0; 
+
+
+2. Internal linkage also exists when constant variables are declared  within the same source file.  For example: 
+const int min = 100;
+3. Moreover, variables, functions, and types with internal linkage that are defined within anonymous namespaces also have internal linkage This means that any variables, functions and types declared within can only be accessed from the same source file where they are declared. Theas can be seen before:
+namespace {
+    int x = 10; //internal linkage variable
+    void func(){  } //internal linkage function 
+}
+
+
+4. Moreover, unless they are specifically declared with the "extern" keyword, functions defined with the "inline" keyword also have internal linkage by default as is shown in the following code I implemented in my program: 
+FoodOrder::FoodOrder() : m_name{}, m_descript{nullptr}, m_price{}, m_isSpecial{false} {}     
+ // this function has internal linkage due to using an inline initialization for the function 
+
+
+On the other hand, a variable or function can be made accessible to other files by using the "extern" keyword, which overrides the default internal linkage. The ‘extern’ keyword tells the compiler that even if the variable or function is declared in another file, the current file can still access it or use it. Thus, through the use of external linkage, variables and functions can be used by other source files in addition to the file they were originally defined in. For instance, if the variable "y" is defined in file1.cpp, file2.cpp can access it by inserting the "extern" keyword before the variable definition. This allows file2.cpp to use or access variable "y" as well.
+
+
+
+
+In my program, I declared the following two external linkage variables: 
+
+
+extern double g_taxrate; 
+extern double g_dailydiscount; 
+
+
+This means that both my g_taxrat and g_dailydiscount variables can be used by external files outside the current program that they are defined in.  It is also important to point out that linking does not alter the location of the variable or function in memory. Rather, it just changes the scope of the variable or function so that it can be used in other files. Variables and functions can therefore be shared without needing to be redefined between different files, which thus helps programs utilize memory more efficiently. 
+
+
+
+
+2. What are static variables and how are they useful in your solution?
+
+
+
+
+A static variable is a type of variable that keeps its value between function calls. Before declaring the variable, the term "static" must be added to define it. In contrast to normal variables, which are deleted when the function terminates and have different values in each function call, they are only available within the same file or block in which they were declared. Static variables are frequently used to keep track of specific information or to count the number of times a function is called during the execution of a program. They are extremely helpful when you need to store a variable that must be shared by several different functions.
+An example of a static variable I used in my program can be seen below: 
+
+
+static unsigned int counter = 0; 
+
+
+I declared counter as a static variable within my display function because I needed to use it keep track of how many times the display function was called without  resetting its previous value,  in accordance with the workshop instructions that told as to use a “use a local-to-function variable that remains in memory for the lifetime of the program and to not use global/member variables to store the counter” 
+
+
+It's important to note that, unlike normal variables, static variables have a single memory address throughout the execution of the whole program. This means that if one function modifies the value of a static variable, the change is visible to all other functions that use the same variable. Static variables do not use memory space each time a function is invoked, as opposed to regular variables, which are constructed and deleted each time a function is called. As a result, the implementation of counter as a static variable within my program allowed me to use memory more efficiently. 
+
+
+
+
+
+
+ 3. The changes that you made in upgrading your FoodOrder class in part 2.
+
+
+
+
+I had to make several changes to my program when transitioning from part 1 to part 2. In part 1 the description variable was declared like so: 
+
+
+char m_descript[25]; 
+
+
+This meant that in part 1, my m_descript variable was statically allocated. 
+
+
+However, part 2 of the workshop instructed us to implement m_descript dynamically using a pointer: 
+
+
+char* m_descript; 
+
+
+Because my FoodOrder class now needed to manage memory dynamically, it meant that I now had to implement the rule of three. This was in contrast to part 1 where I only implemented a default constructor in my class without needing to implement a destructor, a copy assignment operator or a copy constructor. This is because all my memory was statically managed. Instead, I needed to implement the “Rule of three” in part 2 because my class was now using dynamic memory. 
+
+
+This is because the rule of Three should be implemented if a class uses dynamic memory. As a result, a class must implement its own destructor, copy constructor, and copy assignment operator (which I also did in part 2). The rule of three instructs that when a class uses dynamic memory, it is responsible for allocating and deallocating its own memory. When an object is no longer required, the destructor is responsible for freeing up memory. This is necessary because if the memory is not deallocated, it can create a memory leak, which is when the memory is not returned to the system, allowing the application to consume increasingly more memory over time, causing the program to crash or slow down.
+
+
+ The copy constructor and copy assignment operator are in charge of constructing a new object and copying the original object's values to the new object. This is necessary because if you have numerous objects of the same class, changing one should not affect the others. Without a copy constructor and copy assignment operator, the new object would point to the same memory address as the original object, and any changes made to the new object would also be made to the original object, often resulting in undefined behavior, memory leaks and segmentation fault errors etc. 
+
+
+Therefore, if a class that uses dynamic memory fails to implement the Rule of 3, the compiler builds default destructors, copy constructors, and copy assignment operators for it. However, these default implementations may be unable to manage dynamic memory appropriately, which might cause issues. For instance, there might be memory leaks as a result of the default destructor failing to free up dynamically created memory.  Furthermore, the default copy constructor and copy assignment operator will generate a new object that shares the same memory  as the original object. As a result, any changes made to the new object will have an effect on the old object, resulting in undefined behaviors and memory leaks during the execution of a c++ program. 
+
+
+Since part 1 of the workshop instructions only utilized stack memory in the FoodOrder class, I did not need to implement a copy constructor, a copy assignment operator,or a destructor. This is because static memory is allocated during compilation and is automatically removed when the application exits the scope in which it was declared. Because static memory is allocated and deallocated automatically, the compiler does not need to generate a constructor, copy constructor, copy assignment operator or destructor for it. However, even if the memory is static, programmer’s still have the choice to create a constructor for the class to initialize the class’s static class members, (which I chose to do in part 1 because it made the initialization of my class variables more streamlined and automated). 
+
+
+To summarize, because my FoodOrder class now needed to manage memory dynamically, it meant that I had to implement the rule of three. This was in contrast to part 1 where I only implemented a default constructor in my class without needing to implement a destructor, a copy assignment operator or a copy constructor. This is because all my memory was statically managed.
