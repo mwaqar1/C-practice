@@ -1,6 +1,6 @@
 # C++ Templates Workshop
 
-This repository contains the deliverables for the C++ Templates Workshop conducted at Seneca College. The project focuses on the design and implementation of class templates, demonstrating the power and flexibility of C++ templates in software development.
+This repository contains the deliverables for the C++ Templates Workshop. The project focuses on the design and implementation of class templates, demonstrating the power and flexibility of C++ templates in software development.
 
 ## Project Overview
 
