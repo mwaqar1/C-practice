@@ -1,4 +1,4 @@
-# Workshop 7: STL Algorithms - Baked Goods Management Application
+# STL Algorithms - Baked Goods Management Application 
 
 ## Overview
 This C++ application effectively manages a collection of baked goods utilizing the Standard Template Library (STL). Designed as part of an academic workshop, it showcases the application of STL algorithms, lambda expressions, and robust data management techniques.
