@@ -29,6 +29,7 @@ To execute the program and check for memory leaks, run:
 ```
 valgrind ./ws
 ```
- Learning
+ 
+## Learning
 
 This workshop significantly improved my practical C++ skills, particularly in utilizing advanced features and handling complex scenarios with error-prone data. It also underscored the importance of clean, maintainable code and deepened my understanding of functional and object-oriented programming paradigms in C++.
